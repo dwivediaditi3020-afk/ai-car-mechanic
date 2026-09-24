@@ -1,39 +1,46 @@
-🚗 AI Car Mechanic
+# 🚗 AI Car Mechanic
 
 An AI-powered car troubleshooting and mechanic-booking web application that helps users describe vehicle problems, upload supporting media, receive an AI-assisted diagnosis, and book a mechanic service.
 
-The project is built as a full-stack application using Next.js for the frontend and Django REST Framework for the backend, with SQLite for data persistence.
+The project is built as a full-stack application using **Next.js** for the frontend and **Django REST Framework** for the backend, with **SQLite** for data persistence.
 
-📌 Project Overview
+---
 
-AI Car Mechanic is designed to provide a simple digital interface for users experiencing car-related problems.
+## 📌 Project Overview
+
+**AI Car Mechanic** is designed to provide a simple digital interface for users experiencing car-related problems.
 
 A user can:
 
-Describe a car problem through text
-Upload an image, audio recording, or video related to the problem
-Interact with the mechanic chatbot
-Generate a vehicle diagnosis
-View the diagnosed problem
-See the confidence level of the diagnosis
-Receive a recommended repair/service
-Book a mechanic
-View booking confirmation and booking details
+* Describe a car problem through text
+* Upload an image, audio recording, or video related to the problem
+* Interact with the mechanic chatbot
+* Generate a vehicle diagnosis
+* View the diagnosed problem
+* See the confidence level of the diagnosis
+* Receive a recommended repair/service
+* Book a mechanic
+* View booking confirmation and booking details
 
 The application combines conversational interaction, media uploads, AI-assisted diagnosis, and service booking into a single workflow.
 
-✨ Key Features
-💬 AI Car Mechanic Chat
+---
+
+## ✨ Key Features
+
+### 💬 AI Car Mechanic Chat
 
 Users can describe their vehicle problem using natural language.
 
 Example:
 
-"My car makes a rattling noise when I accelerate."
+> "My car makes a rattling noise when I accelerate."
 
 The chatbot processes the user's message and provides a relevant response.
 
-📷 Image Upload
+---
+
+### 📷 Image Upload
 
 Users can upload images related to their car problem.
 
@@ -41,76 +48,94 @@ Supported image formats depend on the browser and backend configuration.
 
 Example use cases:
 
-Dashboard warning lights
-Visible engine components
-Damaged parts
-Tyre condition
-Exterior damage
-🎙️ Audio Upload
+* Dashboard warning lights
+* Visible engine components
+* Damaged parts
+* Tyre condition
+* Exterior damage
+
+---
+
+### 🎙️ Audio Upload
 
 Users can upload an audio recording of unusual vehicle sounds.
 
 This can be useful for problems such as:
 
-Rattling
-Grinding
-Clicking
-Squeaking
-Knocking
-Unusual engine sounds
-🎥 Video Upload
+* Rattling
+* Grinding
+* Clicking
+* Squeaking
+* Knocking
+* Unusual engine sounds
+
+---
+
+### 🎥 Video Upload
 
 Users can upload a video demonstrating a vehicle issue.
 
 This can provide additional context when a problem involves:
 
-Engine behaviour
-Visible movement
-Smoke
-Vibrations
-Dashboard indicators
-Mechanical sounds
-🔍 Vehicle Diagnosis
+* Engine behaviour
+* Visible movement
+* Smoke
+* Vibrations
+* Dashboard indicators
+* Mechanical sounds
+
+---
+
+### 🔍 Vehicle Diagnosis
 
 The application provides a diagnosis workflow based on the user's conversation/session.
 
 The diagnosis interface displays:
 
-Problem
-Diagnosis
-Confidence
-Recommended Service
-🧑‍🔧 Mechanic Booking
+* **Problem**
+* **Diagnosis**
+* **Confidence**
+* **Recommended Service**
+
+---
+
+### 🧑‍🔧 Mechanic Booking
 
 After receiving a diagnosis, users can select:
 
-Book a Mechanic
+**Book a Mechanic**
 
 The booking form collects:
 
-Customer name
-Phone number
-Car model
-Preferred date
-Preferred time
-Recommended service
+* Customer name
+* Phone number
+* Car model
+* Preferred date
+* Preferred time
+* Recommended service
 
 A booking confirmation is then displayed with the generated booking information.
 
-🗂️ Session-Based Conversations
+---
+
+### 🗂️ Session-Based Conversations
 
 Each conversation is associated with a session ID.
 
 This allows the backend to associate:
 
-Chat messages
-Uploaded media
-Diagnosis
-Booking information
+* Chat messages
+* Uploaded media
+* Diagnosis
+* Booking information
 
 with the relevant user session.
 
-🏗️ System Architecture
+---
+
+## 🏗️ System Architecture
+
+```text
                     ┌─────────────────────┐
                     │       User          │
                     └──────────┬──────────┘
@@ -143,18 +168,29 @@ with the relevant user session.
         │     SQLite      │        │   AI / Logic    │
         │    Database     │        │    Processing   │
         └─────────────────┘        └─────────────────┘
-🔄 Application Workflow
-1. Start a Conversation
+```
+
+---
+
+## 🔄 Application Workflow
+
+### 1. Start a Conversation
 
 The user opens the application and starts describing their car problem.
 
 Example:
 
+```text
 "My car is making a strange rattling noise when I accelerate."
-2. Chat Interaction
+```
+
+---
+
+### 2. Chat Interaction
 
 The frontend sends the user's message to the Django backend.
 
+```text
 Next.js
    ↓
 POST /api/chat/
@@ -166,35 +202,46 @@ AI / application logic
 Response
    ↓
 Next.js chatbot
-3. Upload Supporting Media
+```
+
+---
+
+### 3. Upload Supporting Media
 
 The user can attach an:
 
-Image
-Audio file
-Video file
+* Image
+* Audio file
+* Video file
 
 The media is uploaded through the backend and associated with the current session.
 
-4. Generate Diagnosis
+---
+
+### 4. Generate Diagnosis
 
 The diagnosis endpoint processes the current session and returns information such as:
 
+```json
 {
   "problem": "Unusual engine noise",
   "diagnosis": "Possible engine-related mechanical issue",
   "confidence": "Low",
   "recommended_service": "Engine inspection"
 }
+```
 
-Diagnosis output is intended as an AI-assisted troubleshooting aid and should not replace professional mechanical inspection.
+> Diagnosis output is intended as an AI-assisted troubleshooting aid and should not replace professional mechanical inspection.
 
-5. Book a Mechanic
+---
+
+### 5. Book a Mechanic
 
 The user can proceed to mechanic booking after receiving the recommended service.
 
 The booking request contains:
 
+```json
 {
   "session_id": "session-example",
   "customer_name": "Customer Name",
@@ -204,41 +251,63 @@ The booking request contains:
   "preferred_time": "11:00",
   "service": "Engine inspection"
 }
-6. Booking Confirmation
+```
+
+---
+
+### 6. Booking Confirmation
 
 After successful booking, the application displays:
 
-Booking ID
-Customer name
-Car model
-Date
-Time
-Booking status
-🛠️ Tech Stack
-Frontend
-Next.js 16.3.6
-React
-TypeScript
-Tailwind CSS
-HTML5
-CSS
-Fetch API
-Backend
-Python
-Django 6.1.1
-Django REST Framework
-django-cors-headers
-Database
-SQLite
-Development Tools
-Git
-GitHub
-VS Code
-npm
-Python virtual environment
-Deployment
-Vercel — frontend deployment
-📁 Project Structure
+* Booking ID
+* Customer name
+* Car model
+* Date
+* Time
+* Booking status
+
+---
+
+# 🛠️ Tech Stack
+
+## Frontend
+
+* **Next.js 16.3.6**
+* **React**
+* **TypeScript**
+* **Tailwind CSS**
+* HTML5
+* CSS
+* Fetch API
+
+## Backend
+
+* **Python**
+* **Django 6.1.1**
+* **Django REST Framework**
+* **django-cors-headers**
+
+## Database
+
+* **SQLite**
+
+## Development Tools
+
+* Git
+* GitHub
+* VS Code
+* npm
+* Python virtual environment
+
+## Deployment
+
+* **Vercel** — frontend deployment
+
+---
+
+# 📁 Project Structure
+
+```text
 ai-car-mechanic/
 │
 ├── backend/
@@ -271,106 +340,179 @@ ai-car-mechanic/
 │   └── ...
 │
 └── README.md
-⚙️ Local Installation
-Prerequisites
+```
+
+---
+
+# ⚙️ Local Installation
+
+## Prerequisites
 
 Make sure the following are installed:
 
-Python 3.x
-Node.js
-npm
-Git
-🐍 Backend Setup
+* Python 3.x
+* Node.js
+* npm
+* Git
+
+---
+
+# 🐍 Backend Setup
 
 Navigate to the backend directory:
 
+```bash
 cd backend
-1. Create a virtual environment
+```
+
+### 1. Create a virtual environment
 
 Windows:
 
+```bash
 python -m venv .venv
-2. Activate the virtual environment
+```
+
+### 2. Activate the virtual environment
+
+```bash
 .venv\Scripts\activate
-3. Install Python dependencies
+```
+
+---
+
+### 3. Install Python dependencies
+
+```bash
 pip install django djangorestframework django-cors-headers
+```
 
-If a requirements.txt file is available, use:
+If a `requirements.txt` file is available, use:
 
+```bash
 pip install -r requirements.txt
-4. Run database migrations
+```
+
+---
+
+### 4. Run database migrations
+
+```bash
 python manage.py makemigrations
 python manage.py migrate
-5. Start the Django server
+```
+
+---
+
+### 5. Start the Django server
+
+```bash
 python manage.py runserver
+```
 
 The backend will normally be available at:
 
+```text
 http://127.0.0.1:8000/
-⚛️ Frontend Setup
+```
+
+---
+
+# ⚛️ Frontend Setup
 
 Open another terminal and navigate to:
 
+```bash
 cd frontend
+```
 
 Install dependencies:
 
+```bash
 npm install
+```
 
 Start the development server:
 
+```bash
 npm run dev
+```
 
 The Next.js application will normally be available at:
 
+```text
 http://localhost:3000
-🔌 API Endpoints
+```
+
+---
+
+# 🔌 API Endpoints
 
 The application uses REST APIs to communicate between the frontend and backend.
 
-Chat
-POST /api/chat/
+## Chat
+
+### `POST /api/chat/`
 
 Sends a user message to the mechanic chatbot.
 
 Example request:
 
+```json
 {
   "session_id": "session-example",
   "message": "My car is making a rattling noise."
 }
-Media Upload
-POST /api/upload/
+```
+
+---
+
+## Media Upload
+
+### `POST /api/upload/`
 
 Uploads supporting vehicle media.
 
 Request type:
 
+```text
 multipart/form-data
+```
 
 Parameters:
 
+```text
 session_id
 file
+```
 
 Supported media categories:
 
+```text
 Image
 Audio
 Video
-Diagnosis
-POST /api/diagnosis/
+```
+
+---
+
+## Diagnosis
+
+### `POST /api/diagnosis/`
 
 Generates a diagnosis for the current conversation/session.
 
 Example request:
 
+```json
 {
   "session_id": "session-example"
 }
+```
 
 Example response:
 
+```json
 {
   "problem": "Unusual engine noise",
   "diagnosis": "Possible mechanical issue",
@@ -378,13 +520,19 @@ Example response:
   "recommended_service": "Engine inspection",
   "diagnosis_id": 1
 }
-Booking
-POST /api/booking/
+```
+
+---
+
+## Booking
+
+### `POST /api/booking/`
 
 Creates a mechanic booking.
 
 Example request:
 
+```json
 {
   "session_id": "session-example",
   "customer_name": "Customer Name",
@@ -394,17 +542,25 @@ Example request:
   "preferred_time": "11:00",
   "service": "Engine inspection"
 }
-Booking Details
-GET /api/booking/{id}/
+```
+
+---
+
+## Booking Details
+
+### `GET /api/booking/{id}/`
 
 Retrieves information about a specific booking.
 
-This endpoint should be verified against the current backend implementation before claiming it as completed functionality.
+> This endpoint should be verified against the current backend implementation before claiming it as completed functionality.
 
-🧪 Example User Journey
+---
+
+# 🧪 Example User Journey
 
 A typical interaction can look like this:
 
+```text
 User
  │
  │ "My car is making a rattling noise while accelerating."
@@ -436,48 +592,60 @@ Booking Form
  │
  ▼
 Booking Confirmation
-🔐 Data & Safety Considerations
+```
+
+---
+
+# 🔐 Data & Safety Considerations
 
 The application is designed as a troubleshooting assistant rather than a replacement for professional automotive inspection.
 
 Users should not rely solely on an AI-generated diagnosis for:
 
-Safety-critical mechanical issues
-Brake problems
-Steering problems
-Fuel leaks
-Electrical hazards
-Engine failures
-Other potentially dangerous conditions
+* Safety-critical mechanical issues
+* Brake problems
+* Steering problems
+* Fuel leaks
+* Electrical hazards
+* Engine failures
+* Other potentially dangerous conditions
 
 A qualified mechanic should inspect the vehicle before carrying out repairs.
 
-🎯 Project Objectives
+---
+
+# 🎯 Project Objectives
 
 The project demonstrates the integration of:
 
-Modern frontend development
-REST API development
-Full-stack application architecture
-AI-assisted conversational interfaces
-Multimedia file handling
-Session-based application workflows
-Database-backed booking systems
-Frontend/backend integration
-Cloud deployment
-🚀 Deployment
+* Modern frontend development
+* REST API development
+* Full-stack application architecture
+* AI-assisted conversational interfaces
+* Multimedia file handling
+* Session-based application workflows
+* Database-backed booking systems
+* Frontend/backend integration
+* Cloud deployment
 
-The frontend has been deployed using Vercel.
+---
+
+# 🚀 Deployment
+
+The frontend has been deployed using **Vercel**.
 
 The production deployment should be configured so that the frontend communicates with the deployed backend API rather than a local development address.
 
 For local development:
 
+```text
 Frontend → http://localhost:3000
 Backend  → http://127.0.0.1:8000
+```
 
 For production:
 
+```text
 User
  ↓
 Vercel / Next.js
@@ -485,57 +653,67 @@ Vercel / Next.js
 Production Django REST API
  ↓
 Database / AI processing
+```
 
-Before final submission, verify that every production API request points to the deployed backend URL and not 127.0.0.1.
+> Before final submission, verify that every production API request points to the deployed backend URL and not `127.0.0.1`.
 
-📋 Current Feature Checklist
-Feature	Status
-Next.js frontend	✅
-React-based UI	✅
-Django backend	✅
-Django REST Framework	✅
-SQLite database	✅
-Text chat	✅
-Image upload	✅
-Audio upload	✅
-Video upload	✅
-Session-based interaction	✅
-Diagnosis workflow	✅
-Diagnosis confidence	✅
-Recommended service	✅
-Mechanic booking	✅
-Booking confirmation	✅
-GitHub repository	✅
-Vercel frontend deployment	✅
-Production backend verification	🔄
-Booking GET endpoint verification	🔄
-Irrelevant/non-car query handling	🔄
-Follow-up questions before diagnosis	🔄
-Actual media analysis	🔄
-Final API documentation verification	🔄
+---
+
+# 📋 Current Feature Checklist
+
+| Feature                              | Status |
+| ------------------------------------ | ------ |
+| Next.js frontend                     | ✅      |
+| React-based UI                       | ✅      |
+| Django backend                       | ✅      |
+| Django REST Framework                | ✅      |
+| SQLite database                      | ✅      |
+| Text chat                            | ✅      |
+| Image upload                         | ✅      |
+| Audio upload                         | ✅      |
+| Video upload                         | ✅      |
+| Session-based interaction            | ✅      |
+| Diagnosis workflow                   | ✅      |
+| Diagnosis confidence                 | ✅      |
+| Recommended service                  | ✅      |
+| Mechanic booking                     | ✅      |
+| Booking confirmation                 | ✅      |
+| GitHub repository                    | ✅      |
+| Vercel frontend deployment           | ✅      |
+| Production backend verification      | 🔄     |
+| Booking GET endpoint verification    | 🔄     |
+| Irrelevant/non-car query handling    | 🔄     |
+| Follow-up questions before diagnosis | 🔄     |
+| Actual media analysis                | 🔄     |
+| Final API documentation verification | 🔄     |
 
 The items marked 🔄 should be verified against the final backend implementation before describing them as completed.
 
-🔮 Future Improvements
+---
+
+# 🔮 Future Improvements
 
 Potential future enhancements include:
 
-Authentication and user accounts
-Persistent conversation history
-Mechanic/admin dashboard
-Real-time booking status
-Mechanic location tracking
-More detailed vehicle-specific troubleshooting
-AI-powered image analysis
-Audio-based car sound analysis
-Video-based issue detection
-Service-center integration
-Email/SMS booking notifications
-Cloud database
-Production-grade file storage
-Improved diagnosis confidence scoring
-Advanced safety warnings
-💡 Why This Project?
+* Authentication and user accounts
+* Persistent conversation history
+* Mechanic/admin dashboard
+* Real-time booking status
+* Mechanic location tracking
+* More detailed vehicle-specific troubleshooting
+* AI-powered image analysis
+* Audio-based car sound analysis
+* Video-based issue detection
+* Service-center integration
+* Email/SMS booking notifications
+* Cloud database
+* Production-grade file storage
+* Improved diagnosis confidence scoring
+* Advanced safety warnings
+
+---
+
+# 💡 Why This Project?
 
 Traditional vehicle troubleshooting often requires users to understand mechanical terminology before they can explain a problem.
 
@@ -543,21 +721,25 @@ AI Car Mechanic provides a conversational interface that allows users to describ
 
 The application combines:
 
-Conversation → Media → Diagnosis → Service Recommendation → Mechanic Booking
+**Conversation → Media → Diagnosis → Service Recommendation → Mechanic Booking**
 
 into a single workflow.
 
-👩‍💻 Developer
+---
 
-Aditi Dwivedi
+# 👩‍💻 Developer
+
+**Aditi Dwivedi**
 
 Full-Stack / Software Development Project
 
-Technologies
+### Technologies
 
-Next.js · React · TypeScript · Tailwind CSS · Python · Django · Django REST Framework · SQLite · REST APIs · Git · GitHub
+`Next.js` · `React` · `TypeScript` · `Tailwind CSS` · `Python` · `Django` · `Django REST Framework` · `SQLite` · `REST APIs` · `Git` · `GitHub`
 
-📄 Project Status
+---
+
+## 📄 Project Status
 
 This project was developed as a full-stack AI application demonstrating conversational troubleshooting, multimedia input, diagnosis, and mechanic booking.
 
