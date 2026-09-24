@@ -352,15 +352,22 @@ def upload_media(request):
         session_id=session_id
     )
 
-    content_type = uploaded_file.content_type or ""
+    content_type = (uploaded_file.content_type or "").lower()
+    file_name = uploaded_file.name.lower()
 
-    if content_type.startswith("image/"):
+    if content_type.startswith("image/") or file_name.endswith(
+        (".jpg", ".jpeg", ".png", ".gif", ".webp")
+    ):
         media_type = "image"
 
-    elif content_type.startswith("audio/"):
+    elif content_type.startswith("audio/") or file_name.endswith(
+        (".mp3", ".wav", ".ogg", ".m4a", ".aac")
+    ):
         media_type = "audio"
 
-    elif content_type.startswith("video/"):
+    elif content_type.startswith("video/") or file_name.endswith(
+        (".mp4", ".mov", ".avi", ".mkv", ".webm", ".m4v")
+    ):
         media_type = "video"
 
     else:
@@ -394,7 +401,6 @@ def upload_media(request):
         },
         status=status.HTTP_201_CREATED,
     )
-
 
 # ============================================================
 # CREATE DIAGNOSIS
