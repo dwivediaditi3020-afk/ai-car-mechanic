@@ -2,6 +2,14 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 
+import os
+import time
+
+from dotenv import load_dotenv
+from google import genai
+
+load_dotenv()
+
 from .models import Conversation, Message, Diagnosis, Booking
 from .serializers import (
     ChatSerializer,
@@ -403,6 +411,90 @@ def upload_media(request):
     )
 
 # ============================================================
+# GEMINI MEDIA ANALYSIS
+# ============================================================
+def analyze_media_with_gemini(message):
+    """
+    Analyze an uploaded image, audio, or video using Gemini.
+
+    Returns a concise mechanical observation when analysis succeeds.
+    Returns None if Gemini is unavailable or the media cannot be analyzed.
+    """
+
+    api_key = os.getenv("GEMINI_API_KEY")
+
+    if not api_key:
+        return None
+
+    if not message.media_url:
+        return None
+
+    try:
+        client = genai.Client(api_key=api_key)
+
+        file_path = message.media_url.path
+        uploaded_file = client.files.upload(file=file_path)
+
+        # Gemini may need time to process video files before analysis.
+        if message.media_type == "video":
+            for _ in range(60):
+                if uploaded_file.state and uploaded_file.state.name == "ACTIVE":
+                    break
+
+                if uploaded_file.state and uploaded_file.state.name == "FAILED":
+                    return None
+
+                time.sleep(2)
+                uploaded_file = client.files.get(name=uploaded_file.name)
+            else:
+                return None
+
+        prompt = """
+You are a senior automobile technician assisting a customer through a car troubleshooting chatbot.
+
+Analyze the uploaded image, audio, or video and provide ONLY a short, easy-to-understand vehicle observation.
+
+Your response MUST follow this exact format:
+
+Media Observation:
+[1-2 short sentences describing only what can actually be observed.]
+
+Possible Issue:
+[1 short sentence explaining what the observation could indicate, only if reasonably supported by the media. If no issue is apparent, say: "No clear mechanical issue is visible from this media."]
+
+Recommended Check:
+[1 short sentence describing what a mechanic should inspect or verify.]
+
+Rules:
+- Keep the entire response under 100 words.
+- Use simple language that a car owner can understand.
+- Focus only on vehicle/mechanical troubleshooting.
+- Do not use Markdown headings, bullet points, tables, or long explanations.
+- Do not repeat the customer's problem.
+- Do not describe irrelevant background details.
+- Do not mention showroom/dealership settings unless they are directly relevant to the vehicle issue.
+- Do not claim that a fault is confirmed when the media only suggests a possibility.
+- Do not invent sounds, damage, leaks, warning lights, or mechanical problems that cannot be supported by the media.
+- If the media does not provide enough evidence to identify a problem, clearly say so.
+"""
+
+        # Use the cost-efficient multimodal model.
+        response = client.models.generate_content(
+            model="gemini-3.5-flash-lite",
+            contents=[uploaded_file, prompt],
+        )
+
+        if response.text:
+            return response.text.strip()
+
+        return None
+
+    except Exception as error:
+        print(f"Gemini media analysis error: {error}")
+        return None
+
+
+# ============================================================
 # CREATE DIAGNOSIS
 # ============================================================
 
@@ -453,6 +545,25 @@ def create_diagnosis(request):
         for message in user_messages
         if message.message
     )
+
+    # --------------------------------------------------------
+    # Analyze uploaded media with Gemini
+    # --------------------------------------------------------
+
+    media_messages = [
+        message
+        for message in user_messages
+        if message.media_url
+        and message.media_type in ["image", "audio", "video"]
+    ]
+
+    media_observations = []
+
+    for media_message in media_messages:
+        observation = analyze_media_with_gemini(media_message)
+
+        if observation:
+            media_observations.append(observation)
 
     # --------------------------------------------------------
     # Brake diagnosis
@@ -627,18 +738,49 @@ def create_diagnosis(request):
     # --------------------------------------------------------
 
     else:
-        problem = "General vehicle issue"
+        if media_observations:
+            problem = "Media-based vehicle issue"
+
+            diagnosis = "\n\n".join(media_observations)
+
+            confidence = "medium"
+
+            recommended_service = (
+                "Mechanic inspection based on media findings"
+            )
+
+        else:
+            problem = "General vehicle issue"
+
+            diagnosis = (
+                "There is not enough information to identify the "
+                "exact cause. A mechanic should inspect the vehicle "
+                "after collecting more symptoms."
+            )
+
+            confidence = "low"
+
+            recommended_service = (
+                "General vehicle inspection"
+            )
+
+    # --------------------------------------------------------
+    # Media-based diagnosis takes priority when Gemini succeeds
+    # --------------------------------------------------------
+
+    if media_observations:
+        problem = "Media-based vehicle issue"
 
         diagnosis = (
-            "There is not enough information to identify the "
-            "exact cause. A mechanic should inspect the vehicle "
-            "after collecting more symptoms."
+            "The uploaded media provides the following "
+            "technical observations:\n\n"
+            + "\n\n".join(media_observations)
         )
 
-        confidence = "low"
+        confidence = "medium"
 
         recommended_service = (
-            "General vehicle inspection"
+            "Mechanic inspection based on media findings"
         )
 
     # --------------------------------------------------------

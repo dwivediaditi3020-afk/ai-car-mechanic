@@ -89,9 +89,9 @@ export default function Home() {
       if (!response.ok) {
         throw new Error(
           data?.error ||
-            data?.errors ||
-            JSON.stringify(data) ||
-            "Failed to send message."
+          data?.errors ||
+          JSON.stringify(data) ||
+          "Failed to send message."
         );
       }
 
@@ -155,9 +155,9 @@ export default function Home() {
       if (!response.ok) {
         throw new Error(
           data?.error ||
-            data?.errors ||
-            JSON.stringify(data) ||
-            "Failed to upload media."
+          data?.errors ||
+          JSON.stringify(data) ||
+          "Failed to upload media."
         );
       }
 
@@ -223,9 +223,9 @@ export default function Home() {
       if (!response.ok) {
         throw new Error(
           data?.error ||
-            data?.errors ||
-            JSON.stringify(data) ||
-            "Failed to generate diagnosis."
+          data?.errors ||
+          JSON.stringify(data) ||
+          "Failed to generate diagnosis."
         );
       }
 
@@ -289,9 +289,9 @@ export default function Home() {
 
         throw new Error(
           data?.error ||
-            data?.errors ||
-            JSON.stringify(data) ||
-            "Failed to create booking."
+          data?.errors ||
+          JSON.stringify(data) ||
+          "Failed to create booking."
         );
       }
 
@@ -349,21 +349,19 @@ export default function Home() {
                   {messages.map((message) => (
                     <div
                       key={message.id}
-                      className={`flex ${
-                        message.sender === "user"
+                      className={`flex ${message.sender === "user"
                           ? "justify-end"
                           : "justify-start"
-                      }`}
+                        }`}
                     >
                       <div
-                        className={`max-w-[80%] rounded-lg px-4 py-3 ${
-                          message.sender === "user"
+                        className={`max-w-[80%] rounded-lg px-4 py-3 ${message.sender === "user"
                             ? "bg-blue-600 text-white"
                             : "bg-white text-gray-900 shadow"
-                        }`}
+                          }`}
                       >
                         {message.media_type === "image" &&
-                        message.media_url ? (
+                          message.media_url ? (
                           <div>
                             <img
                               src={message.media_url}
@@ -422,6 +420,12 @@ export default function Home() {
                 onChange={(event) =>
                   setInput(event.target.value)
                 }
+                onKeyDown={(event) => {
+                  if (event.key === "Enter" && !event.shiftKey) {
+                    event.preventDefault();
+                    sendMessage();
+                  }
+                }}
                 placeholder="Describe your car problem..."
                 rows={3}
                 className="w-full resize-none rounded-lg border border-gray-300 p-3 text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"

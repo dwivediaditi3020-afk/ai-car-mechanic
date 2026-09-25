@@ -1,0 +1,36 @@
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.venv/
+venv/
+env/
+
+# Django
+*.sqlite3
+db.sqlite3
+media/
+staticfiles/
+
+# Node / Next.js
+node_modules/
+.next/
+out/
+
+# Build / deployment files
+*.zip
+
+# Local test files
+test-car.jpg
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
